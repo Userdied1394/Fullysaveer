@@ -73,15 +73,24 @@ def main():
     else:
         logging.info("TELEGRAM_BOT_TOKEN successfully retrieved.")
 
+    # Set the Updater
     updater = Updater(TOKEN)
+
+    # Use the PORT environment variable for the webhook
+    PORT = int(os.environ.get("PORT", 8000))
+
+    # Start the webhook
+    updater.start_webhook(listen="0.0.0.0",
+                          port=PORT,
+                          url_path=TOKEN)
+
+    # Set the webhook URL
+    webhook_url = f"https://fullysaveer.koyeb.app/{TOKEN}"
+    updater.bot.setWebhook(webhook_url)
 
     # Add a message handler to process any text message (URL links)
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
 
-    # Start the bot with polling
-    updater.start_polling()
+    # Start the bot
     updater.idle()
-
-if __name__ == '__main__':
-    main()
