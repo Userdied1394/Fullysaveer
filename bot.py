@@ -6,9 +6,6 @@ import requests
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
 
-# Initialize logging
-logging.basicConfig(level=logging.INFO)
-
 # Initialize Instaloader for Instagram
 ig_loader = instaloader.Instaloader()
 
@@ -29,7 +26,6 @@ def download_instagram(url: str):
 
 # Placeholder function for LinkedIn (requires custom implementation)
 def download_linkedin(url: str):
-    # For LinkedIn video scraping (simplified for demonstration)
     response = requests.get(url)
     video_path = 'downloads/linkedin_video.mp4'
     with open(video_path, 'wb') as f:
@@ -63,15 +59,17 @@ def handle_message(update: Update, context: CallbackContext):
 
 # Main function to start the bot
 def main():
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
     # Set up Telegram bot token
-    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+    TOKEN = os.getenv("7828501958:AAFGuzqo1eKWYNBsQmita2MqD8or6xc3_jU")
 
     # Log the token status for debugging
     if TOKEN is None:
-        logging.error("TELEGRAM_BOT_TOKEN environment variable is not set.")
+        logger.error("TELEGRAM_BOT_TOKEN environment variable is not set.")
         raise ValueError("TELEGRAM_BOT_TOKEN environment variable is not set.")
-    else:
-        logging.info("TELEGRAM_BOT_TOKEN successfully retrieved.")
 
     # Set the Updater
     updater = Updater(TOKEN)
@@ -92,5 +90,8 @@ def main():
     dp = updater.dispatcher
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
 
-    # Start the bot
+    # Start the bot and keep it running
     updater.idle()
+
+if __name__ == '__main__':
+    main()
