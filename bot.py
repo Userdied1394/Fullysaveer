@@ -60,8 +60,8 @@ def handle_message(update: Update, context: CallbackContext):
 # Main function to start the bot
 def main():
     # Set up Telegram bot token
-    TOKEN = os.getenv("7828501958:AAFGuzqo1eKWYNBsQmita2MqD8or6xc3_jU")
-    updater = Updater(7828501958:AAFGuzqo1eKWYNBsQmita2MqD8or6xc3_jU)
+    TELEGRAM_BOT_TOKEN = os.getenv("7828501958:AAFGuzqo1eKWYNBsQmita2MqD8or6xc3_jU")
+    updater = Updater(TELEGRAM_BOT_TOKEN)
 
     # Add a message handler to process any text message (URL links)
     dp = updater.dispatcher
