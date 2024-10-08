@@ -1,9 +1,13 @@
 import os
+import logging
 import yt_dlp
 import instaloader
 import requests
 from telegram import Update
 from telegram.ext import Updater, MessageHandler, Filters, CallbackContext
+
+# Initialize logging
+logging.basicConfig(level=logging.INFO)
 
 # Initialize Instaloader for Instagram
 ig_loader = instaloader.Instaloader()
@@ -60,8 +64,16 @@ def handle_message(update: Update, context: CallbackContext):
 # Main function to start the bot
 def main():
     # Set up Telegram bot token
-    TELEGRAM_BOT_TOKEN = os.getenv("7828501958:AAFGuzqo1eKWYNBsQmita2MqD8or6xc3_jU")
-    updater = Updater(TELEGRAM_BOT_TOKEN)
+    TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+    # Log the token status for debugging
+    if TOKEN is None:
+        logging.error("TELEGRAM_BOT_TOKEN environment variable is not set.")
+        raise ValueError("TELEGRAM_BOT_TOKEN environment variable is not set.")
+    else:
+        logging.info("TELEGRAM_BOT_TOKEN successfully retrieved.")
+
+    updater = Updater(TOKEN)
 
     # Add a message handler to process any text message (URL links)
     dp = updater.dispatcher
